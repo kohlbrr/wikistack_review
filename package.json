@@ -1,0 +1,31 @@
+{
+  "name": "wikistack",
+  "version": "1.0.0",
+  "description": "Testing",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kohlbrr/wikistack_review.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kohlbrr/wikistack_review/issues"
+  },
+  "homepage": "https://github.com/kohlbrr/wikistack_review#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "morgan": "^1.8.1",
+    "nunjucks": "^3.0.0",
+    "pg": "^6.1.5",
+    "sequelize": "^3.30.4",
+    "static": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
