@@ -19,11 +19,12 @@
   "homepage": "https://github.com/kohlbrr/wikistack_review#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "express": "^4.15.2",
     "morgan": "^1.8.1",
     "nunjucks": "^3.0.0",
+    "path": "^0.12.7",
     "pg": "^6.1.5",
-    "sequelize": "^3.30.4",
-    "static": "^2.0.0"
+    "sequelize": "^3.30.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
