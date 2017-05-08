@@ -4,21 +4,41 @@ const express = require('express');
 const router = express.Router();
 const models = require('../models');
 const Page = models.Page;
+const User = models.User;
 
-router.get('/', (req, res) => {
-
+router.get('/', (req, res, next) => {
+  Page.findAll({})
+  .then((pages) => {
+    res.render('index', {
+      pages: pages
+    })
+  })
+  .catch(next);
 });
 
 router.post('/', (req, res, next) => {
-  let newPage = Page.build(req.body);
-  newPage.save()
-  .then(() => {
-    console.log('Page was saved!');
-    res.redirect('/wiki');
+  const body = req.body;
+  
+  User.findOrCreate({
+    where: {
+      email: body.authorEmail,
+      name: body.authorName
+    }
   })
-  .catch((err) => {
-    next(err);
+  .spread((user, wasCreatedBool) => { // Bluebird function
+    return Page.create({
+      title: body.title,
+      content: body.content,
+      status: body.status
+    })
+    .then((createdPage) => {
+      return createdPage.setAuthor(user);
+    })
   })
+  .then((createdPage) => {
+    res.redirect('/wiki/' + createdPage.urlTitle);
+  })
+  .catch(next);
 });
 
 router.get('/add', (req, res) => {
@@ -34,9 +54,13 @@ router.get('/:urlTitle', (req, res, next) => { // Parameterized routes below
   })
   .then((page) => {
     if(page === null) return next(new Error('Page not found'));
-    res.render('wikipage', {
-      page: page
-    });
+    page.getAuthor()
+    .then((author) => {
+      page.author = author;
+      res.render('wikipage', {
+        page: page
+      });   
+    })
   })
   .catch(next);
 })

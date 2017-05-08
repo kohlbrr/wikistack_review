@@ -2,6 +2,7 @@
 
 const express = require('express');
 const app = express();
+const Promise = require('bluebird');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
@@ -21,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, './public')));
 
-models.db.sync(/*{ force: true }*/)
+models.db.sync({ force: true })
 .then(() => {
   const server = app.listen(8080, () => {
     console.log('Listening on port 8080!');
