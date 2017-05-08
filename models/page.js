@@ -23,6 +23,19 @@ const Page = db.define('page', {
     type: Sequelize.DATE,
     defaultValue: Sequelize.NOW
   }
+}, {
+  hooks: {
+    beforeValidate: (page) => {
+      if(page.title) {
+        page.urlTitle = page.title.replace(/\s+/g,'_').replace(/\W/g, '');
+      }
+    },
+    getterMethods: {
+      route: function () {
+        return '/wiki/' + this.urlTitle;
+      }
+    }
+  }
 });
 
 module.exports = Page;

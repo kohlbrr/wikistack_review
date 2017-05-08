@@ -7,7 +7,8 @@ const bodyParser = require('body-parser');
 const nunjucks = require('nunjucks');
 const path = require('path');
 const models = require('./models');
-//const routes
+
+const wikiRouter = require('./routes/wiki');
 
 app.engine('html', nunjucks.render);
 app.set('view engine', 'html');
@@ -20,7 +21,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, './public')));
 
-models.db.sync({ force: true })
+models.db.sync(/*{ force: true }*/)
 .then(() => {
   const server = app.listen(8080, () => {
     console.log('Listening on port 8080!');
@@ -28,16 +29,13 @@ models.db.sync({ force: true })
 })
 .catch(console.error);
 
-
-//app.use('/', routes);
+app.use('/wiki', wikiRouter);
 
 app.get('/', (req, res, next) => {
   res.send('Hello there!');
 })
 
-
-
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => { // 4 args === error handler
   console.error(err);
-  res.status(500).send(err,message); // ISE on any uncaught error
+  res.status(500).send(err.message); // ISE on any uncaught error
 })
